@@ -9,3 +9,14 @@ class Block {
     this.hash = "";
   }
 }
+
+// Create a class for a new Blockchain
+class Bockchain {
+  constructor() {
+    this.chain = [];
+  }
+  // Creation of a new function to add a block to the blockchain
+  addBlock(newBlock) {
+    this.chain.push(newBlock);
+  }
+}
