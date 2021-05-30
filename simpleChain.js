@@ -1,6 +1,14 @@
-// Create a class javascript component to consum our block data model
+/* ===== SHA256 with Crypto-js ===================================
+|  Learn more: Crypto-js: https://github.com/brix/crypto-js      |
+|  =============================================================*/
+
+const SHA256 = require("crypto-js/sha256");
+
+/* ===== Block Class ===================================
+|  Class with a constructor for block data model       |
+|  ====================================================*/
+
 class Block {
-  // Each class can only have one constructor
   constructor(data) {
     this.height = "";
     this.timeStamp = "";
@@ -10,13 +18,42 @@ class Block {
   }
 }
 
-// Create a class for a new Blockchain
-class Bockchain {
+/* ===== Blockchain ===================================
+|  Class with a constructor for blockchain data model  |
+|  with functions to support:                          |
+|     - createGenesisBlock()                           |
+|     - getLatestBlock()                               |
+|     - addBlock()                                     |
+|     - getBlock()                                     |
+|     - validateBlock()                                |
+|     - validateChain()                                |
+|  ====================================================*/
+
+class Blockchain {
   constructor() {
+    // new chain array
     this.chain = [];
+
+    // add first genesis block
+    this.addBlock(this.createGenesisBlock());
   }
-  // Creation of a new function to add a block to the blockchain
+
+  createGenesisBlock() {
+    return new Block("First block in the chain - Genesis block");
+  }
+
+  // addBlock method
   addBlock(newBlock) {
+    // ? Condition, if there is block in he chain, or, if  the chain.lenght is greater than 0, we create a new block AND we get the hash from the previous block to put it on the new block.
+    if (this.chain.length > 0) {
+      // previous block hash
+      newBlock.previousHash = this.chain[this.chain.length - 1].hash;
+    }
+
+    // SHA256 requires a string of data
+    newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
+
+    // add block to chain
     this.chain.push(newBlock);
   }
 }
