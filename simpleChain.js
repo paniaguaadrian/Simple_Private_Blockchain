@@ -38,22 +38,35 @@ class Blockchain {
     this.addBlock(this.createGenesisBlock());
   }
 
+  // Create first block on the chain
   createGenesisBlock() {
     return new Block("First block in the chain - Genesis block");
   }
 
-  // addBlock method
+  // Get the latest block on the chain
+  getLatestBlock() {
+    return this.chain[this.chain.length - 1];
+  }
+
+  // addBlock function
   addBlock(newBlock) {
+    // Block height
+    newBlock.height = this.chain.length;
+
+    // Block timeStamp
+    newBlock.timeStamp = new Date().getTime().toString().slice(0, -3);
+
     // ? Condition, if there is block in he chain, or, if  the chain.lenght is greater than 0, we create a new block AND we get the hash from the previous block to put it on the new block.
     if (this.chain.length > 0) {
-      // previous block hash
-      newBlock.previousHash = this.chain[this.chain.length - 1].hash;
+      // Previous block hash
+      newBlock.previousHash = this.getLatestBlock().hash;
     }
 
     // SHA256 requires a string of data
     newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
+    console.log(JSON.stringify(newBlock));
 
-    // add block to chain
+    // Add block to chain
     this.chain.push(newBlock);
   }
 }
